@@ -17,8 +17,8 @@ contract Main {
     // file info
     string private version;
     string private t_version;
-    string private metadata;
-    string private t_metadata;
+    // string private metadata;
+    // string private t_metadata;
     string private dphash; // download point hash
     string private t_dphash;
     string private fileAddress;
@@ -51,14 +51,14 @@ contract Main {
     // phase-2 file uploading
     function fileUploading(
         string memory _version,
-        string memory _metadata,
+        /*string memory _metadata,*/
         string memory fileAdd,
         string memory _dphash
     ) public onlyOwner {
         // can do swarm upload here
         if (pendingVerification) revert Main__verficationPending();
         t_version = _version;
-        t_metadata = _metadata;
+        // t_metadata = _metadata;
         fileAddress = fileAdd;
         t_dphash = _dphash;
         pendingVerification = true;
@@ -67,6 +67,10 @@ contract Main {
 
     function checkVersion() public view noOwner returns (string memory) {
         return t_version;
+    }
+
+    function getIpfsAddress() public view noOwner returns (string memory) {
+        return fileAddress;
     }
 
     function verify(bool passed, address peerNode) public noOwner {
@@ -103,7 +107,7 @@ contract Main {
         if ((passed) / (responses) > threshold1) {
             downloadPoint = fileAddress;
             version = t_version;
-            metadata = t_metadata;
+            // metadata = t_metadata;
             dphash = t_dphash;
         }
         pendingVerification = false;
